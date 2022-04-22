@@ -13,9 +13,9 @@ class Card:
 class Deck:
   def __init__(self):
       self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-      self.values = range(1, 14)
-      self.ranks = ["Ace", "Two", "Three", "Four", "Five",
-                   "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"]
+      self.values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+      self.ranks = ["Two", "Three", "Four", "Five",
+                   "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"]
       self.cards = []
 
       for s in self.suits:
@@ -38,11 +38,21 @@ class Deck:
     return random.shuffle(self.cards)
 
 
+class Hand:
+  def __init__(self, cards):
+    self.cards = cards
+  
+  def get_total(self):
+    total = sum(card.value for card in self.cards)
+    return total
+
+
 deck = Deck()
-card = deck.deal_card()
-print(card)
-
-
+deck.shuffle_deck()
+card1 = deck.deal_card()
+card2 = deck.deal_card()
+hand = Hand([card1, card2])
+print(card1, ",", card2, hand.get_total())
 
 
 
