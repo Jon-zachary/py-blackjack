@@ -41,18 +41,32 @@ class Deck:
 class Hand:
   def __init__(self, cards):
     self.cards = cards
+
+  def add_card(self, card):
+    self.cards.append(card)
   
   def get_total(self):
     total = sum(card.value for card in self.cards)
     return total
 
+def play_game():
+  deck = Deck()
+  deck.shuffle_deck()
+  player_card1 = deck.deal_card()
+  player_card2 = deck.deal_card()
+  dealer_card1 = deck.deal_card()
+  dealer_card2 = deck.deal_card()
 
-deck = Deck()
-deck.shuffle_deck()
-card1 = deck.deal_card()
-card2 = deck.deal_card()
-hand = Hand([card1, card2])
-print(card1, ",", card2, hand.get_total())
+  dealer_hand = Hand([dealer_card1, dealer_card2])
+  player_hand = Hand([player_card1, player_card2])
+
+  if dealer_hand.get_total() == 21:
+    print(f"The dealer got Blackjack with a {dealer_card1} and the {dealer_card2} ")
+  if player_hand.get_total() == 21:
+    print(f"The {player_card1} and the {player_card2}, Blackjack!")
+  else:
+    print(f"The {player_card1} and the {player_card2} for a total of {player_hand.get_total()}")
 
 
+play_game()
 
