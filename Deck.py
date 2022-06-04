@@ -1,4 +1,5 @@
 import random
+from xmlrpc.client import Boolean
 class Card:
   def __init__(self, suit, rank, value):
     self.suit = suit
@@ -48,6 +49,14 @@ class Hand:
   def get_total(self):
     total = sum(card.value for card in self.cards)
     return total
+  
+  def has_ace(self):
+    pass
+
+class Agent:
+  role = ""
+  hand = []
+  bankroll = 0
 
 def play_game():
   deck = Deck()
@@ -65,7 +74,20 @@ def play_game():
   if player_hand.get_total() == 21:
     print(f"The {player_card1} and the {player_card2}, Blackjack!")
   else:
-    print(f"The {player_card1} and the {player_card2} for a total of {player_hand.get_total()}")
+    print(f"The dealer shows an {dealer_card1}")
+    print(f"You got the {player_card1} and the {player_card2} for a total of {player_hand.get_total()}")
+    hit_or_stay = input("Press 'h' to get another card or 's' to stand: ")
+    while hit_or_stay == 'h':
+      player_hand.add_card(deck.deal_card())
+      if {player_hand.get_total()} == 21:
+        print(f"{player_hand.cards[-1]} makes 21, winner winner!!!")
+      elif player_hand.get_total() > 21:
+        print(
+            f"You got a {player_hand.cards[-1]} for a total of {player_hand.get_total()}, sorry you bust ")
+      print(f"You got a {player_hand.cards[-1]} for a new total of {player_hand.get_total()}")
+      hit_or_stay = input("Press 'h' to get another card or 's' to stand: ")
+
+
 
 
 play_game()
