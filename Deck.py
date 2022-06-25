@@ -1,5 +1,6 @@
 import random
-from xmlrpc.client import Boolean
+
+from sympy import false, true
 class Card:
   def __init__(self, suit, rank, value):
     self.suit = suit
@@ -47,48 +48,81 @@ class Hand:
     self.cards.append(card)
   
   def get_total(self):
-    total = sum(card.value for card in self.cards)
+    total = sum([card.value for card in self.cards])
     return total
   
   def has_ace(self):
-    pass
-
-class Agent:
-  role = ""
-  hand = []
-  bankroll = 0
+    for card in self.cards:
+      if card.rank == 'Ace': 
+        return true
+    else:
+      return false
 
 def play_game():
+# Game setup ->
   deck = Deck()
   deck.shuffle_deck()
-  player_card1 = deck.deal_card()
-  player_card2 = deck.deal_card()
-  dealer_card1 = deck.deal_card()
-  dealer_card2 = deck.deal_card()
 
-  dealer_hand = Hand([dealer_card1, dealer_card2])
-  player_hand = Hand([player_card1, player_card2])
+  def deal_hand():
+    card1 = deck.deal_card()
+    card2 = deck.deal_card()
+    return  Hand([card1, card2])
 
+  player_hand = deal_hand()
+  dealer_hand = deal_hand()
+
+  player_card1, player_card2 = player_hand.cards
+  dealer_card1, dealer_card2= dealer_hand.cards
+
+
+  # Game logic ->
+ 
+  # Inital deal ->
   if dealer_hand.get_total() == 21:
-    print(f"The dealer got Blackjack with a {dealer_card1} and the {dealer_card2} ")
-  if player_hand.get_total() == 21:
+    print(f'The dealer got Blackjack with a {dealer_card1} and the {dealer_card2} ')
+    print('You lose, goodbye')
+    return
+  elif player_hand.get_total() == 21:
     print(f"The {player_card1} and the {player_card2}, Blackjack!")
+    print('You win, goodbye')
+    return
   else:
     print(f"The dealer shows an {dealer_card1}")
     print(f"You got the {player_card1} and the {player_card2} for a total of {player_hand.get_total()}")
     hit_or_stay = input("Press 'h' to get another card or 's' to stand: ")
+
+    # Main loop ->
+
     while hit_or_stay == 'h':
       player_hand.add_card(deck.deal_card())
-      if {player_hand.get_total()} == 21:
-        print(f"{player_hand.cards[-1]} makes 21, winner winner!!!")
-      elif player_hand.get_total() > 21:
-        print(
-            f"You got a {player_hand.cards[-1]} for a total of {player_hand.get_total()}, sorry you bust ")
-      print(f"You got a {player_hand.cards[-1]} for a new total of {player_hand.get_total()}")
-      hit_or_stay = input("Press 'h' to get another card or 's' to stand: ")
+      if player_hand.get_total() > 21:
+        print(f'Your total is {player_hand.get_total()}, sorry you lose')
+        return
+      elif player_hand == 21:
+        print('21, you win')
+        return
+      else:
+        print(f'your total is {player_hand.get_total()}')
+        hit_or_stay = input("Press 'h' to get another card or 's' to stand: ")
+    if hit_or_stay == 's':
+      print('Dealers turn')
+      print(f'Dealer shows {dealer_card1} {dealer_card2} for a total of {dealer_hand.get_total()}')
+      if dealer_hand.get_total() >= 17:
+        if dealer_hand.get_total() > player_hand.get_total():
+          print(f'Dealer wins with {dealer_hand.get_total()} over {player_hand.get_total()}')
+        elif dealer_hand.get_total() < player_hand.get_total():
+          print(f'Player wins with {player_hand.get_total()} over {dealer_hand.get_total()}')
+        elif dealer_hand.get_total() == player_hand.get_total():
+          print(f'We push with {dealer_hand.get_total()}')
+    elif dealer_hand.get_total() < 17:
+      print('Dealer takes a card')
+      dealer_hand.add_card(deck.deal_card())
+      print(f'Dealer has {dealer_hand.get_total()}')
+      return
 
 
 
+      
 
 play_game()
 
