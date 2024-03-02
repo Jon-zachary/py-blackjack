@@ -1,6 +1,5 @@
 import random
 
-from sympy import false, true
 class Card:
   def __init__(self, suit, rank, value):
     self.suit = suit
