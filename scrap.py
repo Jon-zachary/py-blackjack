@@ -44,3 +44,18 @@
 # v = vowel_count('hello')
 # print(v)
 
+class Nums:
+    def __init__(self, nums):
+        self.n = nums
+    
+    @property
+    def total(self):
+        return sum(self.n)
+        
+N = Nums([1,2,3])
+print(N.n)
+print(N.total)
+
+N.n.append(4)
+print(N.total)
+print(N.n)
