@@ -42,7 +42,13 @@ class Deck:
 class Hand:
   def __init__(self, cards):
     self.cards = cards
-   
+  
+  def __str__(self):
+    s= ""
+    for card in self.cards:
+      s = s + str(card) + " "
+    return s
+  
   def add_card(self, card):
     self.cards.append(card)
   
@@ -56,26 +62,29 @@ class Hand:
   def total(self):
     total = sum([card.value for card in self.cards])
     if self.has_ace():
-       if total + 10 == 21: return 21
+       if total + 10 == 21: return (21,0)
        else:
          total = (total, total + 10)
+    else: total = (total, 0)
     return total
   
   def print_total(self):
     total = self.total
-    if isinstance(total, int):
-      print(total)
+    if total[1] == 0:
+      print(total[0])
+    if total[1] > 21:
+      print(total[0])
     else:
       print('{low} or {high}'.format(low = total[0], high = total[1]))
     return
   
   def isWin(self):
-    return self.total == 21
+    return self.total[0] == 21
   
   def isBust(self):
     if self.has_ace():
       return self.total[0] > 21 and self.total[1] > 21
-    return self.total > 21
+    return self.total[0] > 21
 
     
 def play_game():
@@ -85,17 +94,19 @@ def play_game():
   deck.shuffle_deck()
 
   card1 = Card("Hearts", "Ace", 1)
-  card2= Card("Hearts", "Six", 6)
+  card2 = Card("Hearts", "Six", 6)
+  card3 = Card("Hearts", "Jack", 10)
   # def deal_hand():
   #   card1 = deck.deal_card()
   #   card2 = deck.deal_card()
   #   return  Hand([card1, card2])
 
-  player_hand = Hand([card1, card2])
-  print(player_hand.cards[0], player_hand.cards[1])
+  player_hand = Hand([card1, card2, card3, card3])
   player_hand.print_total()
   print(player_hand.isBust())
   print(player_hand.isWin())
+  player_hand.print_total()
+  print(player_hand)
 
 
 #   # Game logic ->
