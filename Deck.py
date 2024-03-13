@@ -68,15 +68,11 @@ class Hand:
     else: total = (total, 0)
     return total
   
-  def print_total(self):
+  def get_total(self):
     total = self.total
-    if total[1] == 0:
-      print(total[0])
-    if total[1] > 21:
-      print(total[0])
-    else:
-      print('{low} or {high}'.format(low = total[0], high = total[1]))
-    return
+    if total[1] == 0 or total[1] > 21:
+     total = total[0]
+    return total
   
   def isWin(self):
     return self.total[0] == 21
@@ -93,21 +89,15 @@ def play_game():
   deck = Deck()
   deck.shuffle_deck()
 
-  card1 = Card("Hearts", "Ace", 1)
-  card2 = Card("Hearts", "Six", 6)
-  card3 = Card("Hearts", "Jack", 10)
-  # def deal_hand():
-  #   card1 = deck.deal_card()
-  #   card2 = deck.deal_card()
-  #   return  Hand([card1, card2])
+  player_hand = Hand([deck.deal_card(), deck.deal_card()])
+  print(f'player shows {player_hand} for a total of ', player_hand.get_total())
+  player_hand.get_total()
+  dealer_hand = Hand([deck.deal_card(), deck.deal_card()])
+  print(f'dealer shows {dealer_hand.cards[0]}')
 
-  player_hand = Hand([card1, card2, card3, card3])
-  player_hand.print_total()
-  print(player_hand.isBust())
-  print(player_hand.isWin())
-  player_hand.print_total()
-  print(player_hand)
-
+  if player_hand.get_total() == 21 and dealer_hand.get_total() != 21: print("Blackjack player wins")
+  elif dealer_hand.get_total() == 21 and player_hand.get_total() != 21: print(f"Blackjack dealer wins with {dealer_hand}")
+  elif dealer_hand.get_total() == 21 and player_hand.get_total() == 21: print("dealer and player both have 21, push")
 
 #   # Game logic ->
 
