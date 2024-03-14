@@ -81,6 +81,9 @@ class Hand:
     if self.has_ace():
       return self.total[0] > 21 and self.total[1] > 21
     return self.total[0] > 21
+  
+
+
 
     
 def play_game():
@@ -94,10 +97,23 @@ def play_game():
   player_hand.get_total()
   dealer_hand = Hand([deck.deal_card(), deck.deal_card()])
   print(f'dealer shows {dealer_hand.cards[0]}')
+  
+  def inital_deal():
+    if player_hand.get_total() == 21 and dealer_hand.get_total() != 21: print("Blackjack player wins")
+    elif dealer_hand.get_total() == 21 and player_hand.get_total() != 21: print(f"Blackjack dealer wins with {dealer_hand}")
+    elif dealer_hand.get_total() == 21 and player_hand.get_total() == 21: print("dealer and player both have 21, push")
+ 
+  inital_deal()
+  dec = input("Type 'H' to hit or 'S' to stay")
+  if dec == 'H':
+    player_hand.add_card(deck.deal_card())
+    print(player_hand)
+  if dec == 'S':
+    print(f"dealer shows {dealer_hand}")
+    if player_hand.get_total() > dealer_hand.get_total(): print("you win")
+    else: print("you lose")
 
-  if player_hand.get_total() == 21 and dealer_hand.get_total() != 21: print("Blackjack player wins")
-  elif dealer_hand.get_total() == 21 and player_hand.get_total() != 21: print(f"Blackjack dealer wins with {dealer_hand}")
-  elif dealer_hand.get_total() == 21 and player_hand.get_total() == 21: print("dealer and player both have 21, push")
+  
 
 #   # Game logic ->
 
