@@ -99,17 +99,35 @@ def play_game():
   print(f'dealer shows {dealer_hand.cards[0]}')
   
   def inital_deal():
-    if player_hand.get_total() == 21 and dealer_hand.get_total() != 21: print("Blackjack player wins")
-    elif dealer_hand.get_total() == 21 and player_hand.get_total() != 21: print(f"Blackjack dealer wins with {dealer_hand}")
-    elif dealer_hand.get_total() == 21 and player_hand.get_total() == 21: print("dealer and player both have 21, push")
+    if player_hand.isWin() and not dealer_hand.isWin(): print("Blackjack player wins")
+    elif dealer_hand.isWin() and not player_hand.isWin(): print(f"Blackjack dealer wins with {dealer_hand}")
+    elif dealer_hand.isWin() and player_hand.isWin(): print("dealer and player both have 21, push")
+  
+  def dealer_action():
+    while dealer_hand.get_total() < 17:
+      card = deck.deal_card()
+      print(f"dealer draws a {card}")
+      dealer_hand.add_card(deck.deal_card())
+      if dealer_hand.isBust():
+        print(f"dealer busts with a total of {dealer_hand.get_total()}")
+  
+  def player_action():
+    card = deck.deal_card()
+    print(f"player draws a {card}")
+    player_hand.add_card(card)
+    if player_hand.isWin(): print("21, player wins")
+    elif player_hand.isBust(): print(f"player busts with a total of {player_hand.get_total()}")
+    return
+      
  
   inital_deal()
-  dec = input("Type 'H' to hit or 'S' to stay")
-  if dec == 'H':
-    player_hand.add_card(deck.deal_card())
+  dec = input("Type 'h' to hit or 's' to stay: ")
+  if dec == 'h':
+    player_action()
     print(player_hand)
-  if dec == 'S':
+  if dec == 's':
     print(f"dealer shows {dealer_hand}")
+    dealer_action()
     if player_hand.get_total() > dealer_hand.get_total(): print("you win")
     else: print("you lose")
 
